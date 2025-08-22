@@ -1,0 +1,6 @@
+@startuml realizar la venta del pasaje
+(*) --> "Actualizar disponibilidad"
+--> "Registrar facturacion"
+--> (*)
+
+@enduml

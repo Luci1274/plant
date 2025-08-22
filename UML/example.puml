@@ -1,0 +1,22 @@
+@startuml Prueba
+
+class Persona {
+  - nombre: String
+  - edad: int
+  + hablar(): void
+}
+
+class Estudiante {
+  - matricula: String
+  + estudiar(): void
+}
+
+class Profesor {
+  - especialidad: String
+  + enseñar(): void
+}
+
+Persona <|-- Estudiante
+Persona <|-- Profesor
+
+@enduml

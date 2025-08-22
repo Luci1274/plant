@@ -1,0 +1,23 @@
+@startuml Pasajes_vuelo
+
+[*] --> disponibles
+state c1 <<choice>>
+state c2 <<choice>>
+state join <<join>>
+
+disponibles --> venta: Puestos en venta
+
+venta --> c1: El pasaje fue cancelado o devuelto?
+c1 --> cancelado: Si
+
+cancelado --> venta: Poner en venta
+c1 --> reservado: No
+
+reservado --> c2: tomaron el vuelo?
+c2 --> utilizado: Si 
+c2 -->  caducado: No
+
+utilizado --> join: [Despues de la salida del vuelo]
+caducado --> join: [Despues de la salida del vuelo]
+join --> [*]
+@endump

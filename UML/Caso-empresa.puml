@@ -1,0 +1,53 @@
+@startuml Caso-empresa
+
+class Sistema_empresa{
+    + Ingresar_empresas(): Void
+    + Ingresar_empleados(): Void
+    + Ingresar_clientes(): Void
+}
+
+class Ingresar_empresa {
+  + Mostrar_datos_empresas(): Void
+  + agregar_empresa(): Void
+  + eliminar_empresa(): Void
+  - nombre: String
+  - direccion: String
+  - telefono: String
+  - email: String
+  - cuit_empresa: int
+  - tipo_empresa: String
+}
+
+class Ingresar_empleado {
+  + mostrar_empleado(): Void
+  + agregar_empleado(): Void
+  + eliminar_empleado(): Void
+  - nombre: String
+  - apellido: String
+  - dni: int
+  - telefono: String
+  - email: String
+  - puesto: String
+  - sexo: String
+  - sueldo_bruto: int
+  + tipo_empleado: String
+  + empresa: String
+}
+
+class Ingresar_cliente {
+    + mostrar_cliente(): Void
+    + agregar_cliente(): Void
+    + eliminar_cliente(): Void
+    - nombre: String
+    - apellido: String
+    - dni: int
+    - telefono: String
+    - email: String
+    - empresa: String
+}
+
+Sistema_empresa *-- Ingresar_empresa
+Sistema_empresa *-- Ingresar_empleado
+Sistema_empresa *-- Ingresar_cliente
+
+@endduml

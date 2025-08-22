@@ -1,0 +1,25 @@
+@startuml Banco
+
+[*] --> Iniciada: recibe datos
+
+state c1 <<choice>>
+state c2 <<choice>>
+state c3 <<choice>>
+
+Iniciada --> documentacion
+documentacion --> estudio
+estudio --> c1: El cliente es moroso?
+c1 --> standby: Si
+standby --> estudio: Se realizo una verificación
+c1 --> estudio: no
+estudio --> c2: Fue negada?
+c2 --> negado: si
+negado --> [*]
+c2 --> concedida
+concedida --> c3: Está firmada?
+c3 --> firmada: si
+c3 --> no_firmada: no
+firmada --> [*]
+no_firmada --> [*]
+
+@enduml

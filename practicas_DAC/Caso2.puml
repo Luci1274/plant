@@ -1,0 +1,29 @@
+@startuml Venta pasajes
+
+(*) --> "Seleccionar el vuelo"
+if Está disponible? then
+--> [true] "Solicitar datos pasajero"
+    if ¿Es extranjero?
+    --> [True] "Solicitar declaracion"
+    --> continuar
+    else
+    --> [False]  "No solicitar declaracion"
+    --> continuar
+    endif
+    if ¿Tiene descuento?
+        --> [True] "Calcular precio final con descuento"
+        --> "Realizar venta pasaje"
+        else
+        --> [False] "Calcular precio final sin descuento"
+        --> "Realizar venta pasaje"
+        note right: Esta actividad continua en el diagrama 2-1 
+        endif
+        --> "Entregar pasaje"
+        --> (*)
+else
+-> [False] "Informar vuelo completo"
+--> "Ofrecer vuelos alternativos"
+-left--> "Seleccionar el vuelo"
+endif
+
+@enduml

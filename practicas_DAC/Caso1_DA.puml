@@ -1,0 +1,13 @@
+@startuml clinica
+(*) --> "solicitar dni paciente"
+if ¿El paciente está cargado? then
+--> [True] "solicitar fecha y hora"
+--> "Asignar turno" 
+--> "turno almacenado"
+--> (*)
+else
+-> [false] "Solicitar datos"
+--> "Almacenar datos"
+--> "solicitar fecha y hora"
+endif
+@enduml

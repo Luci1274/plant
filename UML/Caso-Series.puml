@@ -1,0 +1,59 @@
+@startuml Caso-Series
+
+class Serie{
+    + registra_serie(): Void
+    + modificar_serie(): Void
+    - título: String
+    - año_de_inicio: Date
+    - sinopsis: String
+    - género/generos: list(String)
+    - personajes: list(Personaje)
+    - actores: list(Actor)
+    - temporadas: list(Temporada)
+    - episodios: list(Episodio)
+}
+
+class Temporada{
+    + registrar_temporada(): Void
+    + ordenar_temporada(): Void
+    - nombre/numero: String or Int
+    - capitulos: list(Episodio)
+    - fecha_de_produccion: Date
+    - fecha_de_lanzamiento: Date
+    - capitulos: list(Episodio)
+    -serie: Serie
+}
+
+class Episodio{
+    + registrar_episodio(): Void
+    + modificar_episodio(): Void
+    - título: String
+    - sinopsis: String
+    - duración: Int
+    - serie: Serie
+    - temporada: Temporada
+}
+
+class Personaje{
+    - serie: Serie
+    - nombre: String
+    - descripcioón: String
+    - actor: Actor
+}
+
+class Actor{
+    - nombre: String
+    - apellido: String
+    - fecha_de_nacimiento: Date
+    - nacionalidad: String
+    - teléfono: String
+    - serie: Serie
+    - personajes: list(Personaje)
+}
+
+Serie "1" o-- "1..*" Temporada
+Temporada "1" o-- "1..*" Episodio
+Serie "1" o-- "1..*" Personaje
+Personaje "1" o-- "1..*" Actor
+Episodio "1" o-- "1..*" Actor
+@enduml

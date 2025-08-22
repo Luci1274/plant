@@ -1,0 +1,52 @@
+@startuml Caso_uiversidad
+
+class Usuario{
+    + Registrar_tipo_usuario(): Void
+    - nombre: String
+    - apellido: String
+    - email: String
+    - contraseña: String
+    - domicilio: String
+    - DNI: int
+    - telefono: String
+    - tpo_de_usuario: String
+}
+
+class Alumno{
+    - Matricular(): Void
+    - Visualizar_expediente_con_asignaturas(): Void 
+    - Validar_matricula_del_usuario(): Void
+}
+
+Alumno --|> "1...*" Usuario
+
+class Profesor{
+    + Asociar_asignatura_a_profesor(): Void
+    + Cargar_acta_con_profesor(): Void
+    + Publicar_acta(): Void
+}
+
+Profesor  --|> "1...*" Usuario
+
+class Asignatura{
+    - nombre: String
+    - curso: String
+    + Registrar_asignatura(): Void   
+}
+
+class Acta {
+    - Asignatura: list <<Asignatura>>
+    - Alumno: list <<Alumno>>
+    - Profesor: list <<Profesor>>
+    - nota: Floral
+    - Curso: String
+    - fecha: Date
+    + Publicar_acta(): Void
+}
+
+Asignatura "1...*" --o "1" Alumno
+Asignatura "1" o-- "1...*" Profesor
+Acta "1" --o "1" Profesor
+Acta "1" --o "1" Asignatura
+Acta "1" --o "1" Alumno
+@enduml

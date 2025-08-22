@@ -1,0 +1,36 @@
+@startuml Diagrama_TP2
+
+state c1 <<choice>>
+state j1 <<join>>
+state c2 <<choice>>
+state c3 <<choice>>
+state c4 <<choice>>
+state f1 <<fork>>
+state j2 <<join>>
+
+[*] --> notificada: Se envio la notificación de la multa
+notificada --> c1: Cual fue la devolucion del correo?
+c1 --> firmado_el_acuse: El acuse fue firmado
+c1 --> certifica_el_rechazo: El acuse fue rechazado
+firmado_el_acuse --> j1
+certifica_el_rechazo --> j1
+j1 --> comunicada: la multa fue comunicada
+comunicada --> c2: Presentó un recurso?
+c2 --> confirmada: [Pasaron 30 dias sin respuesta]
+c2 --> recurrida: si
+recurrida --> c3: fue confirmada o anulada por una autoridad?
+c3 --> confirmada: La autoridad la confirmó
+confirmada --> c4: Fue pagada la multa?
+c4 --> cobrada: Si
+cobrada --> [*]
+c4 --> f1: No
+f1 --> embargo: Iniciar proceso de embargo
+embargo --> j2
+f1 --> notificacion: Notificar al infractor del proceso de embargo
+notificacion --> j2
+j2 --> [*]
+c3 --> anulada: [pasaron 6 meses sin desición]
+c3 --> anulada: La autoridad la anuló
+anulada --> [*]
+
+@enduml

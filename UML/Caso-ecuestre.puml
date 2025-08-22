@@ -1,0 +1,59 @@
+@startuml Caso-ecuestre
+
+class Tipo_cliente{
+    +Registrar_tipo_cliente(): Void
+    +Modificar_tipo_cliente(): Void
+    +Eliminar_tipo_cliente(): Void
+}
+
+class Cliente{
+    + Registrar_cliente(): Void
+    - nombre: String
+    - apellido: String
+    - DNI: String
+    - domicilio: String
+    - telefono: String
+    + Seleccionar_tipo_cliente: Tipo_cliente
+    + Modificar_cliente(): Void
+    + Eliminar_cliente(): Void
+}
+
+class Sistema{
+    + mostrar_datos_clientes(): Void
+    + Validar_datos_cliente(): Void
+    + Cambiar_estado_cliente(): Void
+}
+
+class Establo{
+    + Registrar_establo(): Void
+    - número: Int
+    - ubicacion: String
+    - capacidad: Int
+    - estado: String
+    + Eliminar_establo(): Void
+}
+
+class Caballo{
+    + Registrar_caballo(): Void
+    - descripción: String
+    - raza: String
+    - altura: String
+    - peso: String
+    - edad: Int
+    - seleccionar_cliente: Cliente
+    - Anular_caballo(): Void
+}
+
+class Servicio {
+    - descripcion: String
+    - tipo: String
+    - nivel: Int
+}
+
+Tipo_cliente "1" -- "1...*" Cliente
+Cliente "1" -- "1...*" Caballo
+Caballo "0...1" -- "0...1" Establo
+Cliente "1" -- "1" Sistema
+Cliente "1" -- "0...*" Establo
+
+@enduml

@@ -1,0 +1,92 @@
+@startuml TP1_ING
+
+class Insumos_productos{
+    + Registrar_insumos_productos(): Void
+    + Modificar_insumos_productos(): Void
+    + Eliminar_insumos_productos(): Void
+    + modificar_precio(): Void
+    - tipo: String
+    - marca: String
+    - cantidad: Int
+    - precio: Float
+    - nombre_producto_insumo: String
+}
+
+class Listado_insumos_productos{
+    - porcentaje_venta: Float
+    + filtrar_insumos_productos(): Void
+    + buscar_insumos_productos(): List<<Insumos_productos>>
+    + mostrar_insumos_productos(): Void
+    + ordenar_insumos_productos(): Void
+    + notificar_stock_faltante(): Void
+    + calcular_total_insumos_productos(): Float
+    + restar_stock_vendido(): Void
+    + sumar_stock_comprado(): Void
+    + modificar_porcentaje_venta(): Void
+    + controlar_stock(): Void
+}
+
+class Venta{
+    + Registrar_venta(): Void
+    + Modificar_venta(): Void
+    + Eliminar_venta(): Void
+    + guardar_venta(): Void
+    + emitir_factura(): Void
+    - formas_pago: String
+    - tipo_venta: String
+}
+
+class listado_ventas{
+    + filtrar_ventas(): Void
+    + buscar_ventas(): List<<venta>>
+    + mostrar_ventas(): Void
+    + ordenar_ventas(): Void
+    + calcular_total_ventas(): Float
+}
+
+class Compra{
+    + Registrar_compra(): Void
+    + Modificar_compra(): Void
+    + Eliminar_compra(): Void
+    + guardar_compra(): Void
+}
+
+class listado_compras{
+    + filtrar_compras(): Void
+    + buscar_compras(): List<<Compra>>
+    + mostrar_compras(): Void
+    + ordenar_compras(): Void
+    + calcular_total_compras(): Float
+}
+
+class Proveedor{
+    - nombre_producto_insumo: String
+    - tipo: String
+    - marca: String
+    - cantidad: Int
+    - precio: Float
+    - planilla: png
+}
+
+class Transacción{
+    - fecha: Date
+    - hora: Time
+    - total: Float
+    - cantidad: Int
+    - tipo: String
+    - marca: String
+    - nombre_producto_insumo: String
+}
+
+Insumos_productos "0..*" --o "1" Listado_insumos_productos: "contiene"
+
+Venta "0..*" --o "1" listado_ventas: "contiene informacion"
+Venta "0..*" --|> "0..*" Transacción: "herdan las caracteristicas de los productos y/o insumos"
+Venta "0..*" --o "0..*" Listado_insumos_productos: "modifica el stock"
+
+Compra "0..*" --o "1" listado_compras: "contiene informacion"
+Compra "0..*" --o "1" Proveedor: "se compra a un proveedor"
+Compra "0..*" --|> "0..*" Transacción: "herdan las caracteristicas de los productos y/o insumos"
+Compra "0..*" --o "0..*" Listado_insumos_productos: "modifica el stock"
+
+@enduml

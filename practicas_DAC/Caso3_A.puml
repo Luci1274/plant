@@ -1,0 +1,19 @@
+@startuml Venta de producto
+(*) --> "orden de solicitud venta"
+--> "Realizar pago"
+--> ===F1===
+if ¿Hay stock?
+--> [true] ===J1===
+--> "Orden_procesada"
+--> "Entregar producto"
+--> (*)
+else
+--> [False] ===J2===
+--> "Orden_cancelada"
+--> (*)
+endif
+===F1=== --> if ¿Datos correctos?
+--> [true] ===J1===
+else 
+--> [False] ===J2===
+endif 

@@ -1,0 +1,32 @@
+@startuml cooperativa
+
+state c1 <<choice>>
+state c2 <<choice>>
+state c3 <<choice>>
+state c4 <<choice>>
+
+[*] --> nueva_propuesta: propuesta recibida
+nueva_propuesta --> analizada: se analiza y evalua
+
+analizada --> c1: es rechazada?
+c1 --> rechazada: si
+rechazada --> [*]
+c1 --> aprobada: no
+
+aprobada --> planificacion: sacar requerimientos y fecha de entrega
+planificacion --> revision: charlar con el cliente y ver adiciones o cambios
+revision --> c2: hubieron cambios?
+c2 --> retrazo: si
+c2 --> revision: no
+revision --> c3: Hubo alguna interrupcion o atrazo?
+c3 --> retrazo: si
+note top of c3: explotó un servidor
+retrazo --> planificacion: cambiar fecha de entrega
+c3 --> revision: no
+revision --> entrega
+entrega --> c4: requiere mantenimiento?
+c4 --> [*]: no
+c4 --> mantenimiento: si
+mantenimiento --> [*]
+
+@enduml
