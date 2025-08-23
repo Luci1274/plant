@@ -1,0 +1,49 @@
+@startuml Reservacion de vuelo en linea
+
+(*) --> "Ingresar_fecha_viaje"
+
+if "¿Desea_ingresar_otra?"
+--> [True] "Ingresar_fecha_viaje"
+else
+--> [False] "Enviar_plan_vuelo" 
+--> ===F1===
+endif
+===F1=== --> "Ingresar_informacion_personal"
+
+if "¿Datos_correctos?"
+--> [True] ===J1===
+--> "Elegir_vuelo"
+    --> ===F2===
+    if "¿Tiene_puntos/saldo_suficientes?"
+        --> [True] ===J2===
+    else
+        --> [False] "Probar_otro_metodo"
+        --> "Elegir_vuelo"
+    endif
+    ===F2=== --> "Apartar_reservacion"
+    --> ===J2===
+    --> ===F3===
+    --> Reservar_lugar
+    --> ===J3===
+    ===F3=== --> "Generar_informacion_pago"
+    --> ===J3===
+    --> "Enviar_correo_confirmacion"
+    if "¿Fue confirmado?"
+        --> [True] "Notificar_vuelo_confirmado" 
+        --> (*)
+    else
+        --> [False] "Cancelar_reservacion"
+        --> (*)
+    endif
+else
+--> [False] "Ingresar_informacion_personal"
+endif
+
+===F1=== --> "Buscar_disponibilidad"
+if "¿Hay disponibilidad?"
+--> [True] ===J1===
+else
+--> [False] "Ingresar_fecha_viaje"
+endif
+
+@enduml

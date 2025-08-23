@@ -1,0 +1,12 @@
+@startuml Formulario de registro en linea a un evento L.G
+(*) --> "llenar_formulario"
+--> "Enviar_formulario"
+if "¿Es correcto?"
+--> [True] "crear_cuenta_cliente"
+--> "Enviar confirmacion de creacion"
+--> (*)
+else
+--> [False] "Datos_incorrectos"
+--> "llenar_formulario"
+endif
+@enduml
