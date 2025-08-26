@@ -1,0 +1,7 @@
+@startuml Hipotecas
+
+(*) --> "comprar_casa"
+
+
+
+@enduml
