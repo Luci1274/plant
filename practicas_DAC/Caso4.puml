@@ -1,0 +1,28 @@
+@startuml Maquina expendedora
+
+(*) --> "pedir_moneda"
+if "¿La moneda fue aceptada?" then
+    --> [True] "Seleccionar_producto"
+    if "¿Hay stock?" then
+        --> [True] "Dispensar_producto"
+        --> ===F1===
+        --> "Almacenar moneda"
+        --> ===J1===
+        ===F1=== --> "Dar_producto"
+        --> ===J1===
+        --> "Registrar_venta"
+    else
+        --> [False] "No_hay_stock"
+        --> "devolver_moneda"
+    endif 
+else
+    --> [False] "Moneda_dañada_o_inrreconocible"
+    --> "devolver_moneda"
+    --> "pedir_moneda"
+endif
+
+(*) --> "Tareas_periodicas" 
+--> "Retirar_monedas"
+--> Abastecer_productos_faltantes
+--> (*)
+@enduml
