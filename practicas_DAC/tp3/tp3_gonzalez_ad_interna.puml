@@ -1,0 +1,52 @@
+@startuml administracion_interna
+
+title administracion_interna
+
+|Empleado|
+start
+:Ingresar al sistema;
+:Registrar turno de trabajo;
+:Consultar turnos;
+:Solicitar cambio de turno con colega;
+:Notificar administrador;
+stop
+
+|Administrador|
+start
+:Revisar solicitud de cambio;
+
+if (¿Cambio aprobado?) then
+  :Modificar turno de empleados;
+  :Confirmar cambio;
+else
+  :Rechazar solicitud;
+endif
+
+:Gestionar inventario;
+:Agregar medicamento;
+:Actualizar existencias;
+:Modificar medicamento por error;
+stop
+
+|Sistema|
+start
+:Registrar fecha de vencimiento;
+
+if (¿Medicamento vencido?) then
+  :Dar de baja medicamento;
+  :Mostrar advertencia;
+else
+  :Mantener en inventario;
+endif
+stop
+
+|Fallos externos|
+start
+:Corte eléctrico;
+:Fallo de conexión;
+:Interferencia externa;
+:Cerrar sesión activa;
+:Volver al inicio de sesión;
+stop
+
+@enduml

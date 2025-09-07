@@ -1,0 +1,64 @@
+@startuml administracion_acceso
+
+title administracion_acceso
+
+|Administrador|
+start
+:Ingresar email;
+:Validar acceso con email;
+
+if (¿Cuenta bloqueada?) then
+  :Desbloquear cuenta;
+else
+  :Enviar código por email;
+  :Ingresar código recibido;
+  if (¿Código válido?) then
+    :Acceso concedido;
+  else
+    :Acceso denegado;
+  endif
+endif
+stop
+
+|Usuario común|
+start
+:Ingresar email y contraseña;
+
+if (¿Credenciales válidas?) then
+  :Acceso concedido;
+else
+  :Intentos fallidos +1;
+  if (¿Intentos == 3?) then
+    :Bloquear cuenta;
+    :Desbloquear cuenta;
+  else
+    :Reintentar inicio de sesión;
+  endif
+endif
+stop
+
+|Desbloquear cuenta|
+start
+:Mostrar formulario de desbloqueo;
+:Ingresar datos personales;
+:Contestar 3 preguntas aleatorias;
+
+if (¿Validación correcta?) then
+  :Enviar email con enlace de restablecimiento;
+  :Acceso restablecido;
+else
+  :Sugerir reintentar validación;
+  :Mostrar formulario de desbloqueo;
+endif
+stop
+
+|Fallos externos|
+start
+:Corte eléctrico;
+:Fallo de conexión;
+:Interferencia externa;
+:Forzar cierre de sesión;
+:Volver al inicio de sesión;
+stop
+
+@enduml

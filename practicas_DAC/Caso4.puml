@@ -25,4 +25,5 @@ endif
 --> "Retirar_monedas"
 --> Abastecer_productos_faltantes
 --> (*)
+
 @enduml

@@ -1,7 +1,37 @@
 @startuml Hipotecas
 
-(*) --> "comprar_casa"
-
-
+(*) --> "pedir hipoteca"
+--> ===F1===
+--> "tazar casa"
+---> ===J1=== 
+===F1=== --> "ver sueldo"
+--> ===J1===
+if "¿cumple?" then
+  -->[False] "exigir garantia adicional"
+  --> "pedir datos casa/propietario"
+else
+  -->[True] "no exigir garantia adicional"
+endif
+--> "pedir datos casa/propietario"
+if "¿Son validos?" then
+  --> [True] "Ajuscar capital"
+    if "¿La hipoteca fue aceptada?" then
+      -->[True] "formalizar hipoteca"
+      --> calcular importe
+      --> "Dar hipoteca"
+      --> "comprar casa"
+      if "¿Hubo incumplimiento de pago?" then
+        --> [True] "Tomar garantias"
+        --> (*)
+      else
+        --> [False] "confirmar pago"
+        endif
+  else
+      --> [False] "Rechazar"
+      --> (*)
+  endif
+else
+  --> [False] "pedir datos casa/propietario"
+endif
 
 @enduml
