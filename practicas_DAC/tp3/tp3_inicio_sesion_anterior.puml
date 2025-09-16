@@ -1,0 +1,64 @@
+@startuml Administracion de acceso
+
+(*) --> "Ingresar Email"
+
+
+if "¿Es Administrador?" then
+  --> [Sí] "Validar Acceso con Email"
+  if "¿Cuenta bloqueada?" then
+    --> [Sí] "Desbloquear"
+  else
+    --> [No] "Enviar Código por Email"
+    --> "Ingresar Código"
+    if "¿Código válido?" then
+      --> [Sí] "Sesión de Administrador Iniciada"
+      --> (*)
+    else
+      --> [No] "Intentos de Código +1"
+      if "¿Intentos == 3?" then
+        --> [Sí] "Bloquear Cuenta"
+        --> "Desbloquear"
+      else
+        --> [No] "Reintentar Código"
+        --> "Ingresar Código"
+      endif
+    endif
+  endif
+
+else
+  --> [No] "Ingresar Contraseña"
+  if "¿Credenciales válidas?" then
+    --> [Sí] "Sesión de Usuario Iniciada"
+    --> (*)
+  else
+    --> [No] "Intentos de Login +1"
+    if "¿Intentos == 3?" then
+      --> [Sí] "Bloquear Cuenta"
+      --> "Desbloquear"
+    else
+      --> [No] "Reintentar Ingreso"
+      --> "Ingresar Contraseña"
+    endif
+  endif
+endif
+
+
+"Desbloquear" --> "Mostrar Formulario de Desbloqueo"
+--> "Ingresar Datos Personales (Nombre, Apellido, DNI)"
+--> "Responder Preguntas Aleatorias (x3)"
+if "¿Respuestas correctas == 3?" then
+  --> [Sí] "Validar Datos de Desbloqueo"
+  --> "Enviar Email con Resolución"
+  --> "Enlace para Restablecer Contraseña"
+  --> (*)
+else
+  --> [No] "Reintentar Validación"
+  --> "Responder Preguntas Aleatorias (x3)"
+endif
+
+(*) .u.> "Fallo externo"
+.u.> "Forzar cierre de sesion"
+.u.> "Iniciar sesion"
+.U.> "Ingresar Email"
+
+@enduml

@@ -1,12 +1,13 @@
 @startuml administracion_interna
 
-title administracion_interna
+title Administración Interna
 
 |Empleado|
 start
 :Ingresar al sistema;
 :Registrar turno de trabajo;
 :Consultar turnos;
+:Asociar turno a empleado;
 :Solicitar cambio de turno con colega;
 :Notificar administrador;
 stop
@@ -18,23 +19,26 @@ start
 if (¿Cambio aprobado?) then
   :Modificar turno de empleados;
   :Confirmar cambio;
+  :Notificar empleado;
 else
   :Rechazar solicitud;
 endif
 
 :Gestionar inventario;
-:Agregar medicamento;
+:Registrar medicamento con categoría;
 :Actualizar existencias;
+:Modificar fecha de vencimiento;
 :Modificar medicamento por error;
 stop
 
 |Sistema|
 start
 :Registrar fecha de vencimiento;
+:Registrar movimiento de inventario (compra/venta, fecha, hora, usuario);
 
 if (¿Medicamento vencido?) then
   :Dar de baja medicamento;
-  :Mostrar advertencia;
+  :Mostrar advertencia al usuario;
 else
   :Mantener en inventario;
 endif

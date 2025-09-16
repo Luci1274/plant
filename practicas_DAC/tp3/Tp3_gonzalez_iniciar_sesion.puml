@@ -2,6 +2,23 @@
 
 title administracion_acceso
 
+|Usuario común|
+start
+:Ingresar email y contraseña;
+
+if (¿Credenciales válidas?) then
+  :Acceso concedido;
+else
+  :Intentos fallidos +1;
+  if (¿Intentos == 3?) then
+    :Bloquear cuenta;
+    :Desbloquear cuenta;
+  else
+    :Reintentar inicio de sesión;
+  endif
+endif
+stop
+
 |Administrador|
 start
 :Ingresar email;
@@ -16,23 +33,6 @@ else
     :Acceso concedido;
   else
     :Acceso denegado;
-  endif
-endif
-stop
-
-|Usuario común|
-start
-:Ingresar email y contraseña;
-
-if (¿Credenciales válidas?) then
-  :Acceso concedido;
-else
-  :Intentos fallidos +1;
-  if (¿Intentos == 3?) then
-    :Bloquear cuenta;
-    :Desbloquear cuenta;
-  else
-    :Reintentar inicio de sesión;
   endif
 endif
 stop

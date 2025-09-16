@@ -3,38 +3,40 @@
 title Administración Externa
 
 |Administrador|
-  start
-  :Registrar farmacia (nombre, dirección, ciudad, teléfono, email, CUIT);
-  :Enviar solicitud de cambio de turno;
-  :Consultar turnos disponibles (farmacia, fecha inicio, fecha fin);
-  stop
-
+start
+:Registrar farmacia (nombre, dirección, ciudad, teléfono, email, CUIT);
+:Enviar solicitud de cambio de turno;
+:Consultar turnos disponibles (farmacia, fecha inicio, fecha fin);
+:Consultar calendario con cronograma de farmacias;
+stop
 
 |Sistema|
-    start
-  :Asignar ubicación por mapa interactivo (ciudad, dirección);
-  :Asignar turno a farmacia (fecha inicio, fecha fin);
+start
+:Asignar ubicación en mapa interactivo (ciudad, dirección);
+:Asignar turno a farmacia (fecha inicio, fecha fin);
+:Mostrar calendario con cronograma y ubicación;
 
-  :Mostrar calendario con cronograma de farmacias y ubicación;
+if ("¿Otra farmacia acepta cambio?") then ([Sí])
+  :Modificar turno de farmacia (A, B, fechas inicio/fin, registro);
+  :Invertir turno entre farmacia A y B;
+else ([No])
+  :Eliminar solicitud de cambio;
+endif
 
-  if ("¿Farmacia acepta cambio?") then ([Sí])
-    :Modificar turno de farmacia (A, B, fechas inicio/fin, registro);
-    :Invertir turno entre farmacia A y B;
-  else ([No])
-    :Eliminar solicitud de cambio;
-  endif
-
-  :Eliminar solicitud automáticamente tras 12h;
-    stop
+:Eliminar solicitud automáticamente tras 12h;
+note right
+  Hace el trabajo
+   del reloj de arena
+endnote
+stop
 
 |Fallos externos|
-  start
-  :Corte eléctrico;
-  :Fallo de conexión;
-  :Interferencia externa;
-  :Cerrar sesión activa;
-  :Volver al inicio de sesión;
-  stop
-
+start
+:Corte eléctrico;
+:Fallo de conexión;
+:Interferencia externa;
+:Cerrar sesión activa;
+:Volver al inicio de sesión;
+stop
 
 @enduml
