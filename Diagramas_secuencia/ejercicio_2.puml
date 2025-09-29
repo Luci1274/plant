@@ -1,0 +1,50 @@
+@startuml ejercicio 2
+
+actor Empleado
+actor Pasajero
+participant Sistema
+database DB
+
+Empleado -> Pasajero: solicitar datos del vuelo
+Pasajero --> Empleado: dar datos del vuelo
+
+loop repetir hasta vuelo disponibles
+    Empleado --> Sistema: Ingresar datos
+    Sistema -> DB: Enviar datos
+    DB --> Sistema: Devolver vuelos disponibles
+    Sistema --> Empleado: Mostrar vuelos disponibles
+    Empleado -> Pasajero: Informar vuelos
+    Empleado -> Pasajero: Informar estado del vuelo
+    Empleado -> Pasajero: Ofrecer vuelos alternativos
+    Pasajero --> Empleado: informar sobre nuevo vuelo
+end
+
+Empleado -> Pasajero: Solicitar datos personales
+Pasajero --> Empleado: Dar datos personales
+Empleado -> Sistema: Ingresar datos
+Sistema -> DB: Enviar datos del ususario
+DB --> Sistema: Devolver datos del usuario
+Sistema --> Empleado: mostrar nacionalidad
+opt Pasajero extranjero
+    Empleado -> Pasajero: Solicitar informacion declarada
+    Pasajero --> Empleado: Entregar informacion
+    Empleado -> Sistema: Ingresar informacion
+    Sistema -> DB: Enviar informacion
+    DB --> Sistema: Informar sobre guardado
+    Sistema --> Empleado: Informar sobre informacion almacenada
+    end
+Empleado -> Pasajero: solicitar descuentos
+Pasajero --> Empleado: Informar sobre descuentos
+opt Pasajero con descuentos
+    Empleado -> Sistema: Ingresar descuentos
+    Sistema --> Empleado: Devolver precios con descuento
+    end
+Empleado -> Pasajero: Informar sobre valor vuelo
+Pasajero --> Empleado: Pagar
+Empleado -> Sistema: Ingresar informacion de venta
+Sistema -> DB: Enviar datos
+DB --> Sistema: Informar datos guardados
+Sistema --> Empleado: Informar sobre datos guardados
+Empleado --> Pasajero: Entregar pasaje
+
+@enduml

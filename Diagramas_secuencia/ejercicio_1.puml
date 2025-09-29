@@ -1,0 +1,38 @@
+@startuml ejercicio 1
+Actor Usuario
+Actor Paciente
+participant "Sistema"
+database Base_de_datos
+
+Usuario -> Paciente: solicitar DNI
+Paciente --> Usuario: dar DNI
+Usuario -> "Sistema": Ingresar DNI
+"Sistema" -> Base_de_datos: Enviar DNI
+Base_de_datos --> "Sistema": Devolver DNI
+
+alt paciente cargado
+    "Sistema" --> Usuario: Paciente en "Sistema"
+    Usuario -> Paciente: solicitar fecha y hora
+    Paciente --> Usuario: dar fecha y hora
+    Usuario -> "Sistema": Ingresar fecha y hora
+
+    alt turno disponible
+        "Sistema" -> Paciente: Asignar turno
+        "Sistema" -> Base_de_datos: almacenar turno
+
+    else turno no disponible
+        "Sistema" -> Usuario: informar turno ocupado
+        Usuario -> Paciente: Solicitar otra fecha y hora
+        Paciente --> Usuario: dar nuevos datos
+        Usuario -> "Sistema": Ingresar nueva fecha y hora
+        end
+
+else paciente no ingresado
+    "Sistema" --> Usuario: Paciente no encontrado
+    Usuario -> Paciente: Solicitar datos
+    Paciente --> Usuario: Dar datos
+    Usuario -> "Sistema": Ingresar datos
+    "Sistema" -> Base_de_datos: almacenar datos
+end
+
+@enduml
