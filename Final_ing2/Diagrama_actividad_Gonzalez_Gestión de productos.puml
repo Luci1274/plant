@@ -1,0 +1,24 @@
+@startuml
+title Diagrama de Actividad - Gestión de Productos
+
+|Administrador|
+start
+:Iniciar sesión;
+:Acceder al módulo de productos;
+
+if (¿Agregar nuevo producto?) then (Sí)
+  :Ingresar datos del producto;
+  |Sistema|
+  :Guardar producto en base de datos;
+  :Mostrar confirmación;
+else (No)
+  |Administrador|
+  :Seleccionar producto existente;
+  :Modificar datos;
+  |Sistema|
+  :Actualizar información en base de datos;
+  :Mostrar confirmación;
+endif
+
+stop
+@enduml

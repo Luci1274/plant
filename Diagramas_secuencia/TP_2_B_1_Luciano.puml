@@ -1,0 +1,98 @@
+@startuml
+title Administración Interna (Medicamentos) - Luciano González
+
+actor Administrador
+participant Sistema
+database DB as "Base de Datos"
+
+== Registro y actualización de medicamentos ==
+
+loop Tantas veces como se requiera y hasta datos correctos
+    activate Administrador
+    Administrador -> Sistema: Ingresar_datos_medicamento()
+    activate Sistema
+    Sistema -> DB: Buscar_producto()
+    activate DB
+    DB --> Sistema: Devolver_resultado()
+    deactivate DB
+    Sistema --> Administrador: Mostrar_resultados()
+    deactivate Sistema
+
+    Administrador -> Sistema: Ingresar_datos_adicionales()
+    activate Sistema
+    alt Producto existente
+        Sistema -> DB: Actualizar_medicamento()
+        activate DB
+        DB --> Sistema: Confirmación_actualización()
+        deactivate DB
+    else Producto nuevo
+        create Medicamento
+        Sistema -> Medicamento: Crear_instancia(nombre, tipo, categoría, vencimiento, cantidad)
+        activate Medicamento
+        Sistema -> DB: Registrar_producto(Medicamento)
+        activate DB
+        DB --> Sistema: Confirmación_registro()
+        deactivate DB
+        destroy Medicamento
+        deactivate Medicamento
+        note right of Sistema: Instancia temporal eliminada tras guardarse
+    end
+    Sistema --> Administrador: Mostrar_resultado()
+end
+
+== Control de medicamentos vencidos ==
+
+activate Sistema
+Sistema -> DB: Revisar_medicamentos_vencidos()
+activate DB
+DB --> Sistema: Devolver_medicamentos_vencidos()
+deactivate DB
+
+par Baja automática
+    Sistema -> DB: Eliminar_medicamentos_vencidos()
+    activate DB
+    DB --> Sistema: Confirmación_eliminación()
+    deactivate DB
+else Notificación
+    Sistema --> Administrador: Informar_vencimientos()
+    deactivate Sistema
+end
+
+
+opt Error en la carga
+    activate Administrador
+    Administrador -> Sistema: Ingresar_datos_medicamento()
+    activate Sistema
+    Sistema -> DB: Buscar_medicamento()
+    activate DB
+    DB --> Sistema: Devolver_medicamento()
+    deactivate DB
+    Sistema --> Administrador: Mostrar_resultado()
+    Administrador -> Sistema: Ingresar_nueva_fecha()
+    Sistema -> DB: Actualizar_fecha_vencimiento()
+    DB --> Sistema: Confirmación_actualización()
+    Sistema --> Administrador: Mostrar_confirmación()
+    deactivate Sistema
+    deactivate Administrador
+end
+
+== Movimiento de stock (compra o venta) ==
+
+create Movimiento
+Sistema -> Movimiento: Crear_instancia(tipo_accion, cantidad, fecha, hora, usuario)
+activate Sistema
+activate Movimiento
+Sistema -> DB: Registrar_movimiento(Movimiento)
+activate DB
+DB --> Sistema: Confirmación_movimiento()
+DB -> DB: Actualizar_stock()
+deactivate DB
+opt Producto sin stock
+    DB --> Sistema: Notificar_stock_faltante()
+    Sistema --> Administrador: Enviar_aviso()
+end
+destroy Movimiento
+deactivate Movimiento
+deactivate Sistema
+
+@enduml

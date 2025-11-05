@@ -1,0 +1,17 @@
+@startuml
+title Diagrama de Estados - Producto
+
+[*] --> Nuevo : producto creado
+Nuevo --> Disponible : agregado al catálogo
+
+Disponible --> Modificado : datos editados
+Modificado --> Disponible : cambios confirmados
+
+Disponible --> SinStock : stock = 0
+SinStock --> Disponible : stock actualizado
+
+Disponible --> Vendido : venta registrada
+Vendido --> Disponible : stock restante > 0
+Vendido --> SinStock : stock restante = 0
+
+@enduml

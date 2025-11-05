@@ -1,0 +1,50 @@
+@startuml
+title Diagrama de Secuencia - Compra de Vestido
+
+actor Usuario
+participant Sistema
+participant Carrito
+participant Pago
+database BaseDatos
+
+' === Flujo principal ===
+Usuario -> Sistema : iniciarSesion(correo, contraseña)
+activate Sistema
+Sistema --> Usuario : mostrarCatalogo(productos)
+deactivate Sistema
+Usuario -> Sistema : seleccionarProducto(idProducto)
+activate Sistema
+
+Sistema -> Carrito : agregarProducto(producto, cantidad)
+activate Carrito
+Carrito --> Sistema : productoAgregado()
+deactivate Carrito
+
+Usuario -> Sistema : confirmarCarrito()
+Sistema --> Usuario : solicitarDatosTarjeta()
+deactivate Sistema
+Usuario -> Sistema : ingresarDatosTarjeta(numTarjeta, vencimiento, cvv)
+activate Sistema
+
+Sistema -> Pago : validarTarjeta(datosTarjeta)
+activate Pago
+
+alt tarjeta válida
+  Pago -> BaseDatos : registrarVenta(idUsuario, idProducto, cantidad, total)
+  activate BaseDatos
+  BaseDatos --> Pago : confirmacionRegistro()
+  Pago -> BaseDatos : actualizarStock(idProducto, cantidad)
+  BaseDatos --> Pago : stockActualizado()
+  deactivate BaseDatos
+  
+  Pago --> Sistema : pagoExitoso()
+  Sistema -> Usuario : mostrarConfirmacion()
+else tarjeta inválida
+  Pago --> Sistema : errorValidacion()
+  Sistema -> Usuario : mostrarError("Tarjeta inválida")
+end
+
+deactivate Pago
+deactivate Sistema
+
+@enduml

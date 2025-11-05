@@ -1,0 +1,98 @@
+@startuml
+title Administración Interna (Turnos) - Luciano González
+
+actor Empleado
+actor Administrador
+participant Sistema
+database DB as "Base de Datos"
+
+== Identificación de empleado ==
+
+loop Hasta ingreso correcto
+    Empleado -> Sistema: Ingresar_datos_empleado()
+    activate Sistema
+    note right: Nombre, apellido, DNI, dirección, teléfono, CUIT
+    Sistema -> DB: Buscar_empleado()
+    activate DB
+    DB --> Sistema: Devolver_datos_empleado()
+    deactivate DB
+    opt Empleado_no_encontrado
+        Sistema --> Empleado: Mostrar_error("Empleado no registrado")
+    end
+    deactivate Sistema
+end
+Sistema --> Empleado: Mostrar_confirmacion("Empleado verificado")
+
+== Registro y asociación de turnos ==
+
+Empleado -> Sistema: Ingresar_turno()
+activate Sistema
+note right: campos a tener: Turno, horario de entrada, horario de salida
+create Turno
+Sistema -> Turno: crear turno(Turno, horario de entrada, horario de salida)
+activate Turno
+
+Sistema -> DB: Registrar_turno(Turno)
+activate DB
+DB --> Sistema: Confirmación()
+deactivate DB
+
+Sistema -> DB: Asociar_turno_a_empleado()
+activate DB
+DB --> Sistema: Confirmación_asociación()
+deactivate DB
+
+Sistema --> Empleado: Mostrar_confirmacion("Turno asociado correctamente")
+note right of Sistema: Turno asignado a empleado
+
+deactivate Turno
+destroy Turno
+note right: Instancia temporal eliminada tras guardarse en DB
+deactivate Sistema
+
+== Consulta de turnos ==
+
+Empleado -> Sistema: Ingresar_datos_turno()
+activate Sistema
+note right: Nombre/Descripción, horario entrada/salida
+Sistema -> DB: Buscar_turno()
+activate DB
+DB --> Sistema: Devolver_turnos()
+deactivate DB
+Sistema --> Empleado: Mostrar_turnos()
+deactivate Sistema
+
+== Solicitud de cambio de turno ==
+
+Empleado -> Sistema: Seleccionar_empleados()
+activate Sistema
+Sistema --> Empleado: Pedir_horarios()
+Empleado -> Sistema: Ingresar_horarios()
+note right: Fecha inicial y final de ambos empleados
+Sistema -> DB: Guardar_petición_cambio()
+activate DB
+DB --> Sistema: Confirmación_guardado()
+deactivate DB
+Sistema --> Empleado: Mostrar_validacion()
+deactivate Sistema
+
+== Gestión de peticiones (Administrador) ==
+
+Administrador -> Sistema: Pedir_peticiones()
+activate Sistema
+Sistema -> DB: Buscar_peticiones()
+activate DB
+DB --> Sistema: Devolver_peticiones()
+deactivate DB
+Sistema --> Administrador: Mostrar_peticiones()
+
+opt Aceptar_petición
+    Sistema -> DB: Cambiar_asociación_turno()
+    activate DB
+    DB --> Sistema: Devolver_confirmacion()
+    deactivate DB
+    Sistema --> Empleado: Mostrar_confirmacion("Cambio de turno aprobado")
+end
+deactivate Sistema
+
+@enduml

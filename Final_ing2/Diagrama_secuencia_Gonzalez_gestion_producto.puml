@@ -1,0 +1,45 @@
+@startuml
+title Diagrama de Secuencia - Gestión de Productos
+
+actor Administrador
+participant Sistema
+database BaseDatos
+
+' === Flujo principal ===
+Administrador -> Sistema : iniciarSesion(usuario, contraseña)
+activate Sistema
+Sistema -> BaseDatos : verificarCredenciales(usuario, contraseña)
+activate BaseDatos
+BaseDatos --> Sistema : credencialesVálidas()
+deactivate BaseDatos
+Sistema --> Administrador : accesoPermitido()
+deactivate Sistema
+
+alt agregar producto
+  Administrador -> Sistema : ingresarDatosProducto(nombre, precio, stock)
+  activate Sistema
+  Sistema -> BaseDatos : guardarProducto(datosProducto)
+  activate BaseDatos
+  BaseDatos --> Sistema : productoGuardado()
+  deactivate BaseDatos
+  Sistema --> Administrador : mostrarConfirmación("Producto agregado")
+  deactivate Sistema
+else modificar producto
+  Administrador -> Sistema : seleccionarProducto(idProducto)
+  Sistema -> BaseDatos : obtenerProducto(idProducto)
+  activate BaseDatos
+  BaseDatos --> Sistema : datosProducto()
+  deactivate BaseDatos
+  Sistema --> Administrador : mostrarFormularioEdición()
+  
+  Administrador -> Sistema : modificarDatosProducto(nombre, precio, stock)
+  activate Sistema
+  Sistema -> BaseDatos : actualizarProducto(idProducto, nuevosDatos)
+  activate BaseDatos
+  BaseDatos --> Sistema : productoActualizado()
+  deactivate BaseDatos
+  Sistema --> Administrador : mostrarConfirmación("Producto modificado")
+  deactivate Sistema
+end
+
+@enduml

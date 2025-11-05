@@ -1,0 +1,11 @@
+@startuml
+title Diagrama de Estados - Usuario
+
+[*] --> NoRegistrado : acceso inicial
+NoRegistrado --> Registrado : registro exitoso
+Registrado --> Autenticado : inicio de sesión
+Autenticado --> Inactivo : cierre de sesión
+Inactivo --> Autenticado : nuevo inicio de sesión
+Autenticado --> [*] : sesión finalizada
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml ejercicio 3C
+
+actor Cliente
+participant Sistema
+database DB
+
+
+Cliente -> Sistema: Enviar plan de vuelo
+Cliente -> Sistema: Enviar datos
+par Procesos simultaneos
+    Sistema -> DB: Verificar disponibilidad
+    DB --> Sistema: Devolver disponibilidada
+    Sistema -> DB: Verificar datos
+    DB --> Sistema: Devolver datos 
+    opt Plan invalido o datos inccorectos
+        Sistema --> Cliente: Mostar fechas invalidas
+    end
+end
+Cliente -> Sistema: Enviar pago
+par Segundo proceso simultaneo
+    Sistema -> DB: Almacenar pago
+    DB --> Sistema: estado del pago
+    opt Pago invalido
+        Sistema --> Cliente: Avisar fallo pago
+    Sistema -> DB: apartar reserva
+    opt Reserva no disponible
+        Sistema --> Cliente: avisar estado reserva
+    end
+end
+par tercer proceso simultaneo
+    Sistema -> DB: guardar info reserva
+    Sistema --> Cliente: enviar info vuelo
+end
+opt Cliente no contesta
+    Sistema -> DB: Cancelar reserva
+end
+@enduml

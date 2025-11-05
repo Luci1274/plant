@@ -1,0 +1,22 @@
+@startuml ejercicio 3
+
+actor Cliente
+participant HUB
+participant Sistema
+database DB
+
+loop hasta campos completos
+    HUB -> Cliente : Mostrar formulario
+    Cliente -> HUB: Llenar formulario
+    HUB -> Sistema: Verificar campos completos
+    Sistema --> HUB:  verificacion de campos
+    opt informacion incorrecta
+        HUB --> Cliente : Mostrar error
+    end
+end
+Sistema -> DB: Crear cuenta
+DB --> Sistema: Devolver validacion
+Sistema --> HUB: Devolver validacion
+HUB --> Cliente : Mostrar validacion
+
+@enduml

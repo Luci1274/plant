@@ -1,0 +1,11 @@
+@startuml
+title Diagrama de Estados - Venta
+
+[*] --> Pendiente : carrito confirmado
+Pendiente --> ProcesandoPago : datos de tarjeta ingresados
+ProcesandoPago --> Confirmada : pago exitoso
+ProcesandoPago --> Cancelada : pago fallido
+Confirmada --> [*] : venta registrada
+Cancelada --> [*] : operación anulada
+
+@enduml

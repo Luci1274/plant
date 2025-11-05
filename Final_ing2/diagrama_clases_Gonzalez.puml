@@ -1,0 +1,111 @@
+@startuml
+title Diagrama de Clases - Sistema "Vestidos Encanto"
+
+' === Usuarios ===
+class Usuario {
+    - idUsuario : Integer
+    - nombre : String
+    - correo : String
+    - contraseña : String
+    - direccion : String
+    + registrarse()
+    + iniciarSesion()
+    + verCatalogo()
+    + realizarCompra()
+}
+
+class Administrador {
+    + agregarProducto()
+    + modificarProducto()
+    + actualizarStock()
+    + consultarVentas()
+}
+
+note right of Administrador
+Hereda atributos y métodos de Usuario
+end note
+
+Administrador --|> Usuario
+
+' === Productos ===
+class Producto {
+    - idProducto : Integer
+    - nombre : String
+    - tipoTela : String
+    - adornos : String
+    - hiloCostura : String
+    - precio : Float
+    - stock : Integer
+    - imagen : String
+    + actualizarStock(cantidad : Integer)
+    + modificarDatos()
+}
+
+' === Carrito de Compras ===
+class Carrito {
+    - idCarrito : Integer
+    - fechaCreacion : Date
+    + agregarProducto(p : Producto, cantidad : Integer)
+    + eliminarProducto(p : Producto)
+    + calcularTotal() : Float
+}
+
+class DetalleCarrito {
+    - cantidad : Integer
+    - subtotal : Float
+    + calcularSubtotal()
+}
+
+Usuario "1" --> "0..1" Carrito : posee >
+Carrito "1" --> "*" DetalleCarrito : contiene >
+DetalleCarrito "*" --> "1" Producto : refiere a >
+
+' === Ventas y Pagos ===
+class Venta {
+    - idVenta : Integer
+    - fecha : Date
+    - total : Float
+    + registrarVenta()
+}
+
+class DetalleVenta {
+    - cantidad : Integer
+    - subtotal : Float
+    + calcularSubtotal()
+}
+
+class Pago {
+    - idPago : Integer
+    - tipoTarjeta : String
+    - numeroTarjeta : String
+    - fechaVencimiento : Date
+    - monto : Float
+    + procesarPago()
+    + validarDatosTarjeta() : Boolean
+    + validarMonto(m : Float) : Boolean
+}
+
+Usuario "1" --> "*" Venta : realiza >
+Venta "1" --> "*" DetalleVenta : contiene >
+DetalleVenta "*" --> "1" Producto : refiere a >
+Venta "1" --> "1" Pago : se asocia >
+
+' === Persistencia ===
+interface IPersistencia {
+    + guardarUsuario(u : Usuario)
+    + guardarProducto(p : Producto)
+    + guardarVenta(v : Venta)
+    + actualizarStock(idProducto : Integer, cantidad : Integer)
+    + guardarPago(p : Pago)
+}
+
+class BaseDatos
+
+BaseDatos ..|> IPersistencia
+
+BaseDatos ..> Usuario
+BaseDatos ..> Producto
+BaseDatos ..> Venta
+BaseDatos ..> Pago
+
+@enduml

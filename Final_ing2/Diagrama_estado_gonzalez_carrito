@@ -1,0 +1,21 @@
+@startuml
+title Diagrama de Estados - Carrito de Compras
+
+[*] --> Vacío : carrito creado
+
+Vacío --> ConProductos : agregar producto
+ConProductos --> Actualizado : modificar cantidades
+Actualizado --> ConProductos : cambios confirmados
+
+ConProductos --> Vacío : eliminar todos los productos
+
+ConProductos --> Confirmado : iniciar compra
+Confirmado --> ProcesandoPago : ingresar datos de tarjeta
+
+ProcesandoPago --> Finalizado : pago exitoso
+ProcesandoPago --> ConProductos : pago fallido
+
+Finalizado --> [*] : compra completada
+Vacío --> [*] : carrito abandonado
+
+@enduml

@@ -1,0 +1,107 @@
+@startuml
+title TP2 - Administración de Acceso (Luciano Gonzalez)
+
+actor Usuario
+participant Sistema
+database DB
+
+== Inicio de sesión ==
+
+loop Mientras el usuario desee intentar
+    Usuario -> Sistema: Ingresar_email()
+    activate Sistema
+    Sistema -> DB: Buscar_email()
+    activate DB
+    DB --> Sistema: Devolver_email()
+    deactivate DB
+
+    opt Email no encontrado
+        Sistema --> Usuario: Mostrar_error("Email no registrado")
+    end
+    deactivate Sistema
+end
+
+alt Cuenta no bloqueada
+    opt Usuario es Administrador
+        Sistema --> Usuario: Enviar_codigo_validación()
+        Usuario -> Sistema: Ingresar_codigo()
+    end
+
+    loop Hasta 3 intentos
+        Usuario -> Sistema: Ingresar_contraseña()
+        activate Sistema
+        Sistema -> DB: Validar_credenciales()
+        activate DB
+        DB --> Sistema: Resultado_validación()
+        deactivate DB
+
+        alt Contraseña incorrecta
+            Sistema --> Usuario: Mostrar_error("Contraseña inválida")
+        end
+
+        opt intentos == 3
+            alt Cuenta bloqueada
+                Sistema -> DB: Bloquear_cuenta()
+                Sistema --> Usuario: Avisar_cuenta_bloqueada()
+            end
+        end
+        deactivate Sistema
+    end
+
+    Usuario -> Sistema: Acceder_menu_interno()
+    activate Sistema
+    Sistema --> Usuario: Mostrar_panel_principal()
+    deactivate Sistema
+
+else Cuenta bloqueada
+    loop Hasta datos válidos
+        Usuario -> Sistema: Ingresar_datos_personales()
+        activate Sistema
+        Sistema -> DB: Validar_datos_personales()
+        activate DB
+        DB --> Sistema: Resultado_validación()
+        deactivate DB
+
+        Sistema --> Usuario: Mostrar_preguntas_aleatorias(3)
+        loop Responder preguntas
+            Usuario -> Sistema: Ingresar_respuesta()
+            Sistema -> DB: Validar_respuesta()
+            activate DB
+            DB --> Sistema: Resultado_respuesta()
+            deactivate DB
+        end
+    end
+
+    Sistema --> Usuario: Enviar_resolución_vía_email()
+    deactivate Sistema
+    alt Es Administrador
+        Usuario -> Sistema: Ingresar_nuevo_codigo()
+        activate Sistema
+    else Es usuario
+        Usuario -> Sistema: Ingresar_nueva_contraseña()
+        Sistema -> DB: Actualizar_contraseña()
+        activate DB
+        
+    end
+    DB --> Sistema: Confirmación()
+    deactivate DB
+    Sistema --> Usuario: Mostrar_mensaje("Cuenta desbloqueada con éxito")
+    deactivate Sistema
+end
+
+== Excepciones / condiciones de infraestructura ==
+
+alt Falla de conexión / corte eléctrico
+    -> Sistema: Detectar_falla()
+    activate Sistema
+    Sistema --> Usuario: Cerrar_sesión()
+
+else Actividad sospechosa
+    par
+        Sistema --> Usuario: Cerrar_sesión()
+    else
+        Sistema -> : Avisar_actividad_sospechosa()
+    end
+end
+
+@enduml

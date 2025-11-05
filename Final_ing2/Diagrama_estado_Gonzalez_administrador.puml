@@ -1,0 +1,12 @@
+@startuml
+title Diagrama de Estados - Administrador
+
+[*] --> NoAutenticado : acceso inicial
+NoAutenticado --> Autenticado : login exitoso
+Autenticado --> GestionandoProductos : accede a catálogo
+GestionandoProductos --> Autenticado : vuelve al panel
+Autenticado --> ConsultandoVentas : accede a reportes
+ConsultandoVentas --> Autenticado : vuelve al panel
+Autenticado --> [*] : cierre de sesión
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml ejercicio 4 Luciano
+
+actor Cliente
+actor Propietario
+participant Maquina_expendedora
+database DB_interna
+
+== Funcionamiento normal==
+
+loop Repetir tantas veces como se quiera
+  Cliente --> Maquina_expendedora: Ingresar moneda
+  Maquina_expendedora --> Maquina_expendedora: Validar moneda
+  opt Maneda invalida
+    Maquina_expendedora --> Cliente: devolver moneda
+  end
+end
+Cliente -> Maquina_expendedora: Seleccionar producto
+Maquina_expendedora -> DB_interna: Verificar stock
+DB_interna --> Maquina_expendedora: Devolver stock
+opt Stock insuficiente
+  Maquina_expendedora --> Cliente: Devolver moneda
+end
+par
+  Maquina_expendedora --> Cliente: Dispensar producto
+else
+  Maquina_expendedora -> DB_interna: Registrar venta 
+  note right: Tambien almacena la moneda
+end
+
+
+==Mantenimiento==
+Propietario -> Maquina_expendedora: Retirar monedas / Reponer productos
+Maquina_expendedora -> DB_interna: actualizar stock
+
+
+==Evento de error==
+par
+  Maquina_expendedora -> DB_interna: Generar excepcion
+else
+  Maquina_expendedora -> Maquina_expendedora: Activar alarma
+else
+  Maquina_expendedora -> Propietario: Notificar
+end
+@enduml

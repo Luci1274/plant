@@ -1,0 +1,20 @@
+@startuml ejercicio 3 A
+
+actor Cliente
+participant Sistema
+database DB
+
+Cliente -> Sistema: Llenar orden compra()
+Sistema -> DB: Verificar datos tarjeta()
+DB --> Sistema: Devolver datos tarjeta()
+
+Sistema -> DB: Buscar productos pedidos()
+DB --> Sistema: Devovler stock()
+opt datos invalidos/stock insuficiente
+    Sistema --> Cliente : Avisar compra cancelada
+end
+
+Sistema -> DB: Guardar compra()
+DB --> Sistema: Validacion de guardado()
+Sistema --> Cliente : Avisar compra exitosa
+@enduml

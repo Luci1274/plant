@@ -1,0 +1,37 @@
+@startuml
+title Diagrama de Secuencia - Consulta de Ventas
+
+actor Administrador
+participant Sistema
+database BaseDatos
+
+' === Flujo principal ===
+Administrador -> Sistema : iniciarSesion(usuario, contraseña)
+activate Sistema
+Sistema -> BaseDatos : verificarCredenciales(usuario, contraseña)
+activate BaseDatos
+BaseDatos --> Sistema : credencialesVálidas()
+deactivate BaseDatos
+Sistema --> Administrador : accesoPermitido()
+deactivate Sistema
+
+Administrador -> Sistema : seleccionarFiltros(producto, fecha, cantidad)
+activate Sistema
+Sistema -> BaseDatos : consultarVentas(filtros)
+activate BaseDatos
+
+alt resultados encontrados
+  BaseDatos --> Sistema : listaVentas
+  deactivate BaseDatos
+  Sistema --> Administrador : mostrarResultados(listaVentas)
+  Administrador -> Sistema : exportarReporte(formato)
+  Sistema --> Administrador : confirmaciónExportación()
+else sin resultados
+  BaseDatos --> Sistema : listaVacía
+  deactivate BaseDatos
+  Sistema --> Administrador : mostrarMensaje("Sin resultados")
+end
+
+deactivate Sistema
+
+@enduml
