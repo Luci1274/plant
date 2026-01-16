@@ -8,7 +8,7 @@ participant Pago
 database BaseDatos
 
 ' === Flujo principal ===
-Usuario -> Sistema : iniciarSesion(correo, contraseña)
+Usuario -> Sistema : verCatalogo()
 activate Sistema
 Sistema --> Usuario : mostrarCatalogo(productos)
 deactivate Sistema

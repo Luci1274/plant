@@ -1,0 +1,20 @@
+@startuml
+title Diagrama de Secuencia - Inicio de Sesión
+
+actor Administrador
+participant Sistema
+database BaseDatos
+
+' === Flujo principal ===
+Administrador -> Sistema : iniciarSesion(usuario, contraseña)
+activate Sistema
+Sistema -> BaseDatos : verificarCredenciales(usuario, contraseña)
+activate BaseDatos
+BaseDatos --> Sistema : credencialesVálidas()
+deactivate BaseDatos
+Sistema --> Administrador : accesoPermitido()
+opt Credenciales invalidas
+    Sistema -> Administrador : mostrarError("Credenciales inválidas")
+end
+deactivate Sistema
+@enduml

@@ -3,31 +3,21 @@ title Diagrama de Actividad - Consulta de Ventas
 
 |Administrador|
 start
-:Iniciar sesión;
+:Mostrar panel de reportes;
+
+|Administrador|
+:Seleccionar filtros (producto, fecha, cantidad);
 
 |Sistema|
-:Verificar credenciales;
+:Consultar base de datos;
 
-if (¿Credenciales válidas?) then (Sí)
-  :Mostrar panel de reportes;
-
+if (¿Existen resultados?) then (Sí)
+  :Mostrar resultados;
   |Administrador|
-  :Seleccionar filtros (producto, fecha, cantidad);
-
-  |Sistema|
-  :Consultar base de datos;
-
-  if (¿Existen resultados?) then (Sí)
-    :Mostrar resultados;
-    |Administrador|
-    :Visualizar estadísticas;
-    :Exportar reporte;
-  else (No)
-    :Mostrar mensaje "Sin resultados";
-  endif
-
+  :Visualizar estadísticas;
+  :Exportar reporte;
 else (No)
-  :Mostrar error de autenticación;
+  :Mostrar mensaje "Sin resultados";
 endif
 
 stop

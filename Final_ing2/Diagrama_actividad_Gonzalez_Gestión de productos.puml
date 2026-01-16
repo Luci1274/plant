@@ -3,7 +3,6 @@ title Diagrama de Actividad - Gestión de Productos
 
 |Administrador|
 start
-:Iniciar sesión;
 :Acceder al módulo de productos;
 
 if (¿Agregar nuevo producto?) then (Sí)

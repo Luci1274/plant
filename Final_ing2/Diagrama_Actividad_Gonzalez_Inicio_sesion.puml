@@ -1,0 +1,19 @@
+@startuml
+title Diagrama de Actividad - Inicio de sesión
+
+|Administrador|
+start
+:Ingresar usuario y contraseña;
+
+|Sistema|
+:Validar credenciales;
+
+if (¿Credenciales válidas?) then (Sí)
+  :Acceder al sistema;
+  :Mostrar panel principal;
+else (No)
+  :Mostrar mensaje de error;
+endif
+
+stop
+@enduml

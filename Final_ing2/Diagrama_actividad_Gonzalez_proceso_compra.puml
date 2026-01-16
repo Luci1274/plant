@@ -3,30 +3,24 @@ title Diagrama de Actividad - Proceso de Compra
 
 |Usuario|
 start
-:Iniciar sesión;
 :Ver catálogo de productos;
 :Seleccionar vestido;
 :Agregar al carrito;
 :Confirmar carrito;
 
-if (¿Datos personales completos?) then (Sí)
-  |Sistema|
-  :Solicitar datos de tarjeta;
+|Sistema|
+:Solicitar datos de tarjeta;
+|Usuario|
+:Ingresar datos de tarjeta;
+|Sistema|
+if (¿Tarjeta válida?) then (Sí)
+  :Procesar pago;
+  :Registrar venta;
+  :Actualizar stock;
   |Usuario|
-  :Ingresar datos de tarjeta;
-  |Sistema|
-  if (¿Tarjeta válida?) then (Sí)
-    :Procesar pago;
-    :Registrar venta;
-    :Actualizar stock;
-    |Usuario|
-    :Mostrar confirmación;
-  else (No)
-    :Mostrar error de tarjeta;
-  endif
+  :Mostrar confirmación;
 else (No)
-  |Sistema|
-  :Solicitar datos faltantes;
+  :Mostrar error de tarjeta;
 endif
 
 stop

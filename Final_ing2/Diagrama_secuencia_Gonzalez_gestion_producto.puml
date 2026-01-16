@@ -6,15 +6,6 @@ participant Sistema
 database BaseDatos
 
 ' === Flujo principal ===
-Administrador -> Sistema : iniciarSesion(usuario, contraseña)
-activate Sistema
-Sistema -> BaseDatos : verificarCredenciales(usuario, contraseña)
-activate BaseDatos
-BaseDatos --> Sistema : credencialesVálidas()
-deactivate BaseDatos
-Sistema --> Administrador : accesoPermitido()
-deactivate Sistema
-
 alt agregar producto
   Administrador -> Sistema : ingresarDatosProducto(nombre, precio, stock)
   activate Sistema
